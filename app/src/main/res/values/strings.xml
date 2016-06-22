@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TestMenu</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="accessToken">pk.eyJ1IjoiZGF2aWRzMTgyMDA5IiwiYSI6ImNpb3hqZGIzazAwN2d4dW01NTVoNW1jeGsifQ.67RWzMtcs3xWqNyWZZSgig</string>
+</resources>
