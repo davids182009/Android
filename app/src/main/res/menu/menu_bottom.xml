@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/recent_item"
+        android:icon="@android:drawable/star_big_on"
+        android:title="Cosa 1..." />
+    <item
+        android:id="@+id/location_item"
+        android:icon="@android:drawable/star_big_on"
+        android:title="Cosa 2..."/>
+    <item
+        android:id="@+id/favorite_item"
+        android:icon="@android:drawable/star_big_on"
+        android:title="Cosa 3..." />
+</menu>
