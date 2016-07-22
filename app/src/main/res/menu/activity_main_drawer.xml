@@ -3,13 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Cosa 1..." />
+            android:id="@+id/reportes_usuario"
+            android:icon="@drawable/ic_reportes_usuario"
+            android:title="Tus Reportes" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Cosa 2..." />
+            android:icon="@drawable/ic_llamar_emergencia"
+            android:title="Llamadas Emergencia" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
@@ -20,16 +20,16 @@
             android:title="Cosa 4..." />
     </group>
 
-    <item android:title="Configuracion">
+    <item android:title="Configuraciones">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Cosa 1..." />
+                android:id="@+id/configuracion"
+                android:icon="@drawable/ic_configuracion"
+                android:title="Configuración" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Cosa 1..." />
+                android:id="@+id/ayuda"
+                android:icon="@drawable/ic_ayuda"
+                android:title="Ayuda" />
         </menu>
     </item>
 

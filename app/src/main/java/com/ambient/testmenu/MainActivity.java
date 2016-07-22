@@ -2,6 +2,7 @@ package com.ambient.testmenu;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -18,6 +19,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -30,14 +35,22 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabSelectedListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private MapView mapView;
     private MapboxMap map;
+    private SlidingUpPanelLayout mLayout;
     LocationServices locationServices;
     FloatingActionButton floatingActionButton;
+    TextView textNameSlide;
+    ListView lv;
 
     private static final int PERMISSIONS_LOCATION = 0;
 
@@ -46,91 +59,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Ejecutar la ubicacion de usuario...", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        //Visualizacion del mapa....
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        // Create a mapView
-        mapView = (MapView) findViewById(R.id.mapa);
-        mapView.onCreate(savedInstanceState);
-
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(MapboxMap mapboxMap) {
-                // Customize map with markers, polylines, etc.
-                map = mapboxMap;
-            }
-        });
-
-
- /*       //Barra inferior si se quiere poner con bottom!! Falta mirar como se hace :/ ....
-        BottomBar bottomBar = BottomBar.attach(this, savedInstanceState);
-        bottomBar.setItemsFromMenu(R.menu.menu_bottom, new OnMenuTabSelectedListener() {
-            public void onMenuItemSelected(int itemId) {
-                Context context = getApplicationContext();
-                int duration = Toast.LENGTH_SHORT;
-
-                switch (itemId) {
-                    case R.id.recent_item:
-                        //Snackbar.make(coordinatorLayout, "Recent Item Selected", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(context, "Presiono Items Recientes", duration).show();
-                        break;
-                    case R.id.favorite_item:
-                        //Snackbar.make(coordinatorLayout, "Favorite Item Selected", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(context, "Presiono Items Favoritos", duration).show();
-                        break;
-                    case R.id.location_item:
-                        //Snackbar.make(coordinatorLayout, "Location Item Selected", Snackbar.LENGTH_LONG).show();
-                        Toast.makeText(context, "Presiono Items Localizacion", duration).show();
-                        break;
-                }
-            }
-        });
-
-        // Set the color for the active tab. Ignored on mobile when there are more than three tabs.
-        bottomBar.setActiveTabColor("#C2185B");
-
-//        // Use the dark theme. Ignored on mobile when there are more than three tabs.
-//        bottomBar.useDarkTheme(true);
-//
-//        // Use custom text appearance in tab titles.
-//        bottomBar.setTextAppearance(R.style.);
-//
-//        // Use custom typeface that's located at the "/src/main/assets" directory. If using with
-//        // custom text appearance, set the text appearance first.
-//        bottomBar.setTypeFace("MyFont.ttf");*/
-
-
-        //Ubicacion del usuario por medio del boton flotante...
-        locationServices = LocationServices.getLocationServices(MainActivity.this);
-
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (map != null) {
-                    toggleGps(!map.isMyLocationEnabled());
-                }
-            }
-        });
+        inicializar(savedInstanceState);
     }
 
     @Override
@@ -175,19 +104,25 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.reportes_usuario) {
             // Handle the camera action
             Toast.makeText(context, "Presiono Boton Cosa 1...", duration).show();
+            startActivity(new Intent(MainActivity.this, ActivityPnlLateral1.class));
         } else if (id == R.id.nav_gallery) {
             Toast.makeText(context, "Presiono Boton Cosa 2...", duration).show();
+            startActivity(new Intent(MainActivity.this, ActivityPnlLateral2.class));
         } else if (id == R.id.nav_slideshow) {
             Toast.makeText(context, "Presiono Boton Cosa 3...", duration).show();
+            startActivity(new Intent(MainActivity.this, ActivityPnlLateral3.class));
         } else if (id == R.id.nav_manage) {
             Toast.makeText(context, "Presiono Boton Cosa 4...", duration).show();
-        } else if (id == R.id.nav_share) {
+            startActivity(new Intent(MainActivity.this, ActivityPnlLateral4.class));
+        } else if (id == R.id.configuracion) {
             Toast.makeText(context, "Presiono Boton Cosa 1 Configuracion...", duration).show();
-        } else if (id == R.id.nav_send) {
+            startActivity(new Intent(MainActivity.this, ActivityPnlLateral5.class));
+        } else if (id == R.id.ayuda) {
             Toast.makeText(context, "Presiono Boton Cosa 2 Configuracion...", duration).show();
+            startActivity(new Intent(MainActivity.this, ActivityPnlLateral6.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -260,9 +195,9 @@ public class MainActivity extends AppCompatActivity
                 }
             });
             //Setear iconos dependiendo del clic en el boton de ubicacion...
-            floatingActionButton.setImageResource(R.drawable.ic_localizacion_usuario_desac);
+            floatingActionButton.setImageResource(R.drawable.ic_localizacion_usuario_desac_svg);
         } else {
-            floatingActionButton.setImageResource(R.drawable.ic_localizacion_usuario);
+            floatingActionButton.setImageResource(R.drawable.ic_localizacion_usuario_svg);
         }
         // Enable or disable the location layer on the map
         map.setMyLocationEnabled(enabled);
@@ -280,5 +215,138 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    public void inicializar(Bundle savedInstanceState){
+        inicializarComponentesGraficos();
+        inicializarMapa(savedInstanceState);
+        inicializarBarraInferior(savedInstanceState);
+        inicializarBotonUbicacionUsuario();
+    }
+
+    public void inicializarComponentesGraficos(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    public void inicializarMapa(Bundle savedInstanceState){
+        //Visualizacion del mapa....
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Create a mapView
+        mapView = (MapView) findViewById(R.id.mapa);
+        mapView.onCreate(savedInstanceState);
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(MapboxMap mapboxMap) {
+                // Customize map with markers, polylines, etc.
+                map = mapboxMap;
+            }
+        });
+    }
+
+    public void inicializarLista(int itemId){
+        lv = (ListView) findViewById(R.id.list);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(new Intent(MainActivity.this, ActivityForm.class));
+                //Toast.makeText(MainActivity.this, "onItemClick", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        List<String> listaOpciones = new ArrayList<>();
+
+        switch (itemId) {
+            case R.id.recent_item:
+                listaOpciones = Arrays.asList("Opcion 1", "Opcion 2", "Opcion 3");
+                break;
+            case R.id.favorite_item:
+                listaOpciones = Arrays.asList("Opcion 4", "Opcion 5", "Opcion 6");
+                break;
+            case R.id.location_item:
+                listaOpciones = Arrays.asList("Opcion 7", "Opcion 8", "Opcion 9", "Opcion 10");
+                break;
+        }
+        // This is the array adapter, it takes the context of the activity as a
+        // first parameter, the type of list view as a second parameter and your
+        // array as a third parameter.
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                listaOpciones);
+
+        lv.setAdapter(arrayAdapter);
+    }
+
+    public void inicializarBarraInferior(Bundle savedInstanceState){
+
+        textNameSlide = (TextView) findViewById(R.id.name);
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+
+        //Barra inferior si se quiere poner con bottom!! Falta mirar como se hace :/ ....
+        BottomBar bottomBar = BottomBar.attach(this, savedInstanceState);
+        bottomBar.setItemsFromMenu(R.menu.menu_bottom, new OnMenuTabSelectedListener() {
+            public void onMenuItemSelected(int itemId) {
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+
+                switch (itemId) {
+                    case R.id.recent_item:
+                        //Snackbar.make(coordinatorLayout, "Recent Item Selected", Snackbar.LENGTH_LONG).show();
+                        inicializarLista(R.id.recent_item);
+                        textNameSlide.setText("Items Recientes");
+                        if (mLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.HIDDEN)) {
+                            mLayout.setAnchorPoint(0.5f);
+                            //Toast.makeText(context, "State:..." + mLayout.getPanelState().name(), duration).show();
+                            mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                        }
+                        break;
+                    case R.id.favorite_item:
+                        //Snackbar.make(coordinatorLayout, "Favorite Item Selected", Snackbar.LENGTH_LONG).show();
+                        inicializarLista(R.id.favorite_item);
+                        textNameSlide.setText("Items Favoritos");
+                        if (mLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.HIDDEN)) {
+                            mLayout.setAnchorPoint(0.5f);
+                            //Toast.makeText(context, "State:..." + mLayout.getPanelState().name(), duration).show();
+                            mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                        }
+                        break;
+                    case R.id.location_item:
+                        //Snackbar.make(coordinatorLayout, "Location Item Selected", Snackbar.LENGTH_LONG).show();
+                        inicializarLista(R.id.location_item);
+                        textNameSlide.setText("Items Localizacion");
+                        if (mLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.HIDDEN)) {
+                            mLayout.setAnchorPoint(0.5f);
+                            //Toast.makeText(context, "State:..." + mLayout.getPanelState().name(), duration).show();
+                            mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                        }
+                        break;
+                }
+            }
+        });
+    }
+
+    public void inicializarBotonUbicacionUsuario(){
+        //Ubicacion del usuario por medio del boton flotante...
+        locationServices = LocationServices.getLocationServices(MainActivity.this);
+
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (map != null) {
+                    toggleGps(!map.isMyLocationEnabled());
+                }
+            }
+        });
     }
 }
