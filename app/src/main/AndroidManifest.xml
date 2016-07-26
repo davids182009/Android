@@ -30,7 +30,8 @@
         <activity android:name=".ActivityPnlLateral3" />
         <activity android:name=".ActivityPnlLateral4" />
         <activity android:name=".ActivityPnlLateral5" />
-        <activity android:name=".ActivityPnlLateral6"></activity>
+        <activity android:name=".ActivityPnlLateral6"/>
+        <activity android:name=".ActivityForm"/>
     </application>
 
 </manifest>
